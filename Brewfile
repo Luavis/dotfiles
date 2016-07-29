@@ -47,6 +47,7 @@ brew 'php70', args: ['without-apache', 'with-fpm', 'with-mysql']
 brew 'mackup'
 
 # cask applications
+cask 'gpgtools'
 cask 'intellij-idea'
 cask 'iterm2'
 cask 'google-chrome'

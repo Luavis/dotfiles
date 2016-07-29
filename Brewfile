@@ -73,9 +73,3 @@ cask 'font-nanumgothic'
 cask 'font-nanummyeongjo'
 cask 'font-nanum-pen'
 cask 'font-fontawesome'
-
-mas 'Movist', id: 461788075
-mas 'BetterSnapTool', id: 417375580
-mas 'Airmail 3', id: 918858936
-mas 'Transmit', id:403388562
-mas 'iCircuit', id: 454347770

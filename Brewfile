@@ -71,5 +71,4 @@ cask 'font-meslo-lg-for-powerline'
 cask 'font-meslo-lg'
 cask 'font-nanumgothic'
 cask 'font-nanummyeongjo'
-cask 'font-nanum-pen'
-cask 'font-fontawesome'
+

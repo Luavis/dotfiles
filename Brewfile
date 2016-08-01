@@ -63,6 +63,7 @@ cask 'busycal'
 cask 'utorrent'
 cask 'istat-menus'
 cask 'android-studio'
+cask 'transmission'
 
 # cask fonts
 cask 'font-d2coding'

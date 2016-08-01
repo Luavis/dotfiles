@@ -158,6 +158,7 @@ setup() {
     cp .functions ~/.functions
     cp .exports ~/.exports
     cp .gitconfig ~/.gitconfig
+    cp .gitignore ~/.gitignore
     cp .tmux.conf ~/.tmux.conf
 
     print_install "Run .macos"

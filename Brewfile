@@ -64,6 +64,7 @@ cask 'busycal'
 cask 'utorrent'
 cask 'istat-menus'
 cask 'android-studio'
+cask 'xamarin-studio'
 cask 'transmission'
 
 # cask fonts

@@ -82,14 +82,6 @@ run_brew_script() {
 }
 
 
-mackup_restore() {
-    # download mackup.cfg
-    print_install "Restore with mackup"
-    curl -fsSL https://gist.github.com/Luavis/7c704b74a32a1e34cecc12e9523b2470/raw > .mackup.cfg
-    yes | mackup restore
-}
-
-
 sublime_setting() {
     print_install "Setting sublime text 3"
     local home=$(realpath ~)
@@ -171,7 +163,6 @@ sudo -v
 xcode_command_line_install
 brew_install
 run_brew_script
-mackup_restore
 sublime_setting
 source_input_setting
 nvim_setting

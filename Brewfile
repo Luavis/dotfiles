@@ -65,6 +65,7 @@ cask 'utorrent'
 cask 'istat-menus'
 cask 'android-studio'
 cask 'xamarin-studio'
+cask 'mono-mdk'
 cask 'transmission'
 
 # cask fonts

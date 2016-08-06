@@ -45,6 +45,7 @@ brew 'tig'
 brew 'nginx'
 brew 'php70', args: ['without-apache', 'with-fpm', 'with-mysql']
 brew 'mackup'
+brew 'mysql
 
 # cask applications
 cask 'gpgtools'
@@ -53,7 +54,7 @@ cask 'iterm2'
 cask 'google-chrome'
 cask 'java' unless system '/usr/libexec/java_home --failfast'
 cask 'sublime-text-dev'
-cask 'telegram'
+cask 'telegram-desktop-dev'
 cask 'adobe-photoshop-cc'
 cask 'adobe-photoshop-lightroom'
 cask 'tower'
@@ -63,6 +64,7 @@ cask 'busycal'
 cask 'utorrent'
 cask 'istat-menus'
 cask 'android-studio'
+cask 'xamarin-studio'
 cask 'transmission'
 
 # cask fonts

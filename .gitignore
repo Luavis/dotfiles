@@ -1,5 +1,10 @@
 # Compiled Python files
 *.pyc
+.python-version
+
+# Ruby
+.ruby-version
+Gemfile.lock
 
 # Folder view configuration files
 .DS_Store
@@ -13,4 +18,6 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
-ext
+# Git
+.gitignore
+

@@ -67,6 +67,8 @@ cask 'android-studio'
 cask 'xamarin-studio'
 cask 'mono-mdk'
 cask 'transmission'
+cask 'paw'
+
 
 # cask fonts
 cask 'font-d2coding'

@@ -45,7 +45,7 @@ brew 'tig'
 brew 'nginx'
 brew 'php70', args: ['without-apache', 'with-fpm', 'with-mysql']
 brew 'mackup'
-brew 'mysql
+brew 'mysql'
 
 # cask applications
 cask 'gpgtools'

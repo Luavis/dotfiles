@@ -118,7 +118,7 @@ nvim_setting() {
         exit
     fi
 
-    cp -r ./nvim ~/.config/nvim
+    cp -r ./nvim ~/.config
     curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     nvim +PlugInstall +PlugUpdate +PlugClean! +qall
@@ -156,20 +156,75 @@ setup() {
     print_install "Run .macos"
     # Run settingup macos
     ./.macos
+    # reboot for source input apply
+    read -r -p "Do you want reboot system. [y/N] " response
+    case $response in
+        [yY][eE][sS]|[yY])
+        sudo shutdown -r now
+        ;;
+    esac
+}
+help() {
+    print_blue "Luavis dotfiles"
+    echo ""
+    echo "Usage:"
+    echo "install.sh [option]		Run install scipts(if options is not set run all scripts)"
+    echo ""
+    echo "Option:"
+    echo ""
+    echo "xcode			Run xcode command line install, if it is not installed"
+    echo "brew			Install brew from internet"
+    echo "brew_bundle		Run brew bundle"
+    echo "sublime			Config sublime text editor preferences"
+    echo "nvim			Config nvim preferences"
+    echo "dots			Copy dotfiles and run .macos"
+    echo "ext			Run ext scripts in ext directory"
+    echo "help			Print this help message and exit"
+    exit 0
 }
 
 # sudo mode
 sudo -v
 
-xcode_command_line_install
-brew_install
-run_brew_script
-sublime_setting
-source_input_setting
-nvim_setting
-run_ext_scripts
+if [ "$1" == '' ]; then
+    	xcode_command_line_install
+	brew_install
+	run_brew_script
+	sublime_setting
+	source_input_setting
+	nvim_setting
+	run_ext_scripts
 
-setup
+	setup
+else
+	case "$1" in
+	    xcode)
+		xcode_command_line_install
+		;;
+	    brew)
+		brew_install
+		;;
+	    brew_bundle)
+		run_brew_script
+		;;
+	    sublime)
+		sublime_setting
+		;;
+	    nvim)
+		nvim_setting
+		;;
+	    ext)
+		run_ext_scripts
+		;;
+	    dots)
+		setup
+		;;
+	    help)
+		help
+		;;
+	    *)
+		help
+		;;
+	esac
+fi
 
-# reboot for source input apply
-sudo shutdown -r now

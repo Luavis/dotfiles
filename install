@@ -168,7 +168,7 @@ help() {
     print_blue "Luavis dotfiles"
     echo ""
     echo "Usage:"
-    echo "install.sh [option]		Run install scipts(if options is not set run all scripts)"
+    echo "install [option]        Run install scipts(if options is not set run all scripts)"
     echo ""
     echo "Option:"
     echo ""

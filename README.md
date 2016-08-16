@@ -4,7 +4,7 @@
 ```homebrew```, ```homebrew bundle```, ```mackup```, ```mas```
 
 ### Usage
-```sh
+```
 $ ./install [option]    Run install scipts(if options is not set run all scripts)
 
 Option:

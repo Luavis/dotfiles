@@ -69,7 +69,7 @@ cask 'xamarin-studio'
 cask 'mono-mdk'
 cask 'transmission'
 cask 'paw'
-
+cask 'santa'
 
 # cask fonts
 cask 'font-d2coding'

@@ -70,6 +70,7 @@ cask 'mono-mdk'
 cask 'transmission'
 cask 'paw'
 cask 'santa'
+cask 'alcatraz'
 
 # cask fonts
 cask 'font-d2coding'

@@ -4,6 +4,7 @@ tap 'homebrew/core'
 tap 'homebrew/versions'
 tap 'homebrew/dupes'
 tap 'homebrew/services'
+tap 'homebrew/gui'
 
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
@@ -47,6 +48,8 @@ brew 'php70', args: ['without-apache', 'with-fpm', 'with-mysql']
 brew 'mackup'
 brew 'mysql'
 brew 'mosh'
+brew 'gtkwave'
+brew 'icarus-verilog'
 
 # cask applications
 cask 'gpgtools'

@@ -40,3 +40,5 @@ for file in ~/.{exports,aliases,functions}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
+# go-lang
+export PATH=$PATH:/usr/local/opt/go/libexec/bin

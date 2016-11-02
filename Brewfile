@@ -75,6 +75,7 @@ cask 'transmission'
 cask 'paw'
 cask 'santa'
 cask 'alcatraz'
+cask 'arduino'
 
 # cask fonts
 cask 'font-d2coding'

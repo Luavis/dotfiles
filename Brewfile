@@ -50,6 +50,7 @@ brew 'mysql'
 brew 'mosh'
 brew 'gtkwave'
 brew 'icarus-verilog'
+brew 'golang'
 
 # cask applications
 cask 'gpgtools'

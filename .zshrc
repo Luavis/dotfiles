@@ -5,7 +5,7 @@ export ZSH=~/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="steeef"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="false"
@@ -40,5 +40,10 @@ for file in ~/.{exports,aliases,functions}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
+# ADB
+export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
+if which swiftenv > /dev/null; then eval "$(swiftenv init -)"; fi
+
 # go-lang
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
+

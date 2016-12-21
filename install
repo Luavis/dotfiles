@@ -54,6 +54,8 @@ xcode_command_line_install() {
     then
         print_install "Xcode command line tools"
         `xcode-select --install`
+        echo "Try again after install xcode-select"
+        exit 1
     else
         print_skip "Xcode command line tool"
     fi

@@ -32,7 +32,7 @@ print_install() {
 
 print_skip() {
     local program=$1
-    print_error "${program} alread installed............[Skip]"
+    print_error "${program} already installed............[Skip]"
 }
 
 function realpath {
@@ -48,18 +48,19 @@ function realpath {
 
 xcode_command_line_install() {
     # check xcode commandline is pre-installed
-    local xcode_installed=$(xcode-select -p 2>&1)
+    local xcode_installed=$(xcode-select -p 2>/dev/null)
+    echo $xcode_installed
     if [ "$xcode_installed" = "" ];
     then
         print_install "Xcode command line tools"
-	    `xcode-select --install`
+        `xcode-select --install`
     else
         print_skip "Xcode command line tool"
     fi
 }
 
 brew_install() {
-    local brew_installed=$(brew --version 2>&1)
+    local brew_installed=$(brew --version 2>/dev/null)
     if [[ "$brew_installed" = "" ]]; then
         print_install "Homebrew"
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -71,7 +72,7 @@ brew_install() {
 
 run_brew_script() {
     # download brewfile
-    print_install "Install brews"
+    print_install "brews"
     # update latest homebrew
     brew update
     # upgrade all package
@@ -82,13 +83,12 @@ run_brew_script() {
 }
 
 
-sublime_setting() {
+_setting() {
     print_install "Setting sublime text 3"
-    local home=$(realpath ~)
 
     # install package control
     curl -fsSL https://sublime.wbond.net/Package%20Control.sublime-package > \
-    "$home/Library/Application Support/Sublime Text 3/Installed Packages/Package Control.sublime-package"
+    "$HOME/Library/Application Support/Sublime Text 3/Installed Packages/Package Control.sublime-package"
 }
 
 
@@ -142,8 +142,13 @@ run_ext_scripts() {
 
 
 setup() {
+    print_install "Install oh-my-zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    # install ZSH Theme
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
     print_install "Change user shell to zsh"
-    # chsh -s /bin/zsh
+    chsh -s /bin/zsh
     print_install "Copy dotfiles"
     cp .zshrc ~/.zshrc
     cp .aliases ~/.aliases
@@ -154,10 +159,17 @@ setup() {
     cp .tmux.conf ~/.tmux.conf
 
     print_install "Run .macos"
+
     # Run settingup macos
     ./.macos
     # reboot for source input apply
-    read -r -p "Do you want reboot system. [y/N] " response
+    read -r -p "Do you want to create ssh key? [y/N] " response
+    case $response in
+        [yY][eE][sS]|[yY])
+        ssh-keygen -t rsa
+        ;;
+    esac
+    read -r -p "Do you want reboot system? [y/N] " response
     case $response in
         [yY][eE][sS]|[yY])
         sudo shutdown -r now
@@ -172,59 +184,66 @@ help() {
     echo ""
     echo "Option:"
     echo ""
-    echo "xcode			Run xcode command line install, if it is not installed"
-    echo "brew			Install brew from internet"
-    echo "brew_bundle		Run brew bundle"
-    echo "sublime			Config sublime text editor preferences"
-    echo "nvim			Config nvim preferences"
-    echo "dots			Copy dotfiles and run .macos"
-    echo "ext			Run ext scripts in ext directory"
-    echo "help			Print this help message and exit"
+    echo "xcode         Run xcode command line install, if it is not installed"
+    echo "brew          Install brew from internet"
+    echo "brew_bundle       Run brew bundle"
+    echo "sublime           Config sublime text editor preferences"
+    echo "nvim          Config nvim preferences"
+    echo "dots          Copy dotfiles and run .macos"
+    echo "ext           Run ext scripts in ext directory"
+    echo "help          Print this help message and exit"
     exit 0
 }
 
-# sudo mode
-sudo -v
 
-if [ "$1" == '' ]; then
-    	xcode_command_line_install
-	brew_install
-	run_brew_script
-	sublime_setting
-	source_input_setting
-	nvim_setting
-	run_ext_scripts
+if [ "$1" = "" ]; then
+    # sudo mode
+    sudo -v
+    xcode_command_line_install
+    brew_install
+    run_brew_script
+    sublime_setting
+    source_input_setting
+    nvim_setting
+    run_ext_scripts
 
-	setup
+    setup
+elif [ "$1" = "help" ]; then
+    help
 else
-	case "$1" in
-	    xcode)
-		xcode_command_line_install
-		;;
-	    brew)
-		brew_install
-		;;
-	    brew_bundle)
-		run_brew_script
-		;;
-	    sublime)
-		sublime_setting
-		;;
-	    nvim)
-		nvim_setting
-		;;
-	    ext)
-		run_ext_scripts
-		;;
-	    dots)
-		setup
-		;;
-	    help)
-		help
-		;;
-	    *)
-		help
-		;;
-	esac
+    case "$1" in
+        xcode)
+        sudo -v
+        xcode_command_line_install
+        ;;
+        brew)
+        sudo -v
+        brew_install
+        ;;
+        brew_bundle)
+        sudo -v
+        run_brew_script
+        ;;
+        sublime)
+        sudo -v
+        sublime_setting
+        ;;
+        nvim)
+        sudo -v
+        nvim_setting
+        ;;
+        ext)
+        sudo -v
+        run_ext_scripts
+        ;;
+        dots)
+        sudo -v
+        setup
+        ;;
+        *)
+        print_error "Wrong command $1"
+        help
+        ;;
+    esac
 fi
 

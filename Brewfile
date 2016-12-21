@@ -51,10 +51,11 @@ brew 'mosh'
 brew 'gtkwave'
 brew 'icarus-verilog'
 brew 'golang'
+brew 'dockutil'
 
 # cask applications
 cask 'gpgtools'
-cask 'intellij-idea'
+cask 'intellij-idea-ce'
 cask 'iterm2'
 cask 'google-chrome'
 cask 'java' unless system '/usr/libexec/java_home --failfast'
@@ -71,17 +72,30 @@ cask 'istat-menus'
 cask 'android-studio'
 cask 'xamarin-studio'
 cask 'mono-mdk'
-cask 'transmission'
 cask 'paw'
 cask 'santa'
 cask 'alcatraz'
 cask 'arduino'
+cask 'macspice'
+cask 'microsoft-office'
+cask 'KeepingYouAwake'
 
 # cask fonts
 cask 'font-d2coding'
-cask 'font-hack.rb'
+cask 'font-hack'
 cask 'font-meslo-lg-for-powerline'
 cask 'font-meslo-lg'
 cask 'font-nanumgothic'
 cask 'font-nanummyeongjo'
+
+# Mac app store application
+mas 'KakaoTalk', id: 869223134
+mas 'iCircuit', id: 454347770
+mas 'BetterSnapTool', id: 417375580
+mas 'Movist', id: 461788075
+mas 'Transmit', id: 403388562
+mas 'Xcode', id: 497799835
+mas 'Toad', id: 747961939
+mas 'Boom 2: The Best Audio Enhancement App', id: 948176063
+mas 'Microsoft Remote Desktop', id: 715768417
 

@@ -82,6 +82,8 @@ run_brew_script() {
 
     brew bundle
     brew cleanup
+    # accep xcode build after install
+    sudo xcodebuild -license accept
 }
 
 

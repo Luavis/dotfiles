@@ -79,6 +79,7 @@ cask 'arduino'
 cask 'macspice'
 cask 'microsoft-office'
 cask 'KeepingYouAwake'
+cask 'the-unarchiver'
 
 # cask fonts
 cask 'font-d2coding'

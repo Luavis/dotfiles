@@ -81,6 +81,7 @@ cask 'macspice'
 cask 'microsoft-office'
 cask 'KeepingYouAwake'
 cask 'the-unarchiver'
+cask 'genymotion'
 
 # cask fonts
 cask 'font-d2coding'

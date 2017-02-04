@@ -15,7 +15,9 @@ DISABLE_LS_COLORS="false"
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
-plugins=(git git-flow autojump cp django xcode tmux osx ruby pyenv python zsh-syntax-highlighting)
+plugins=(git git-flow autojump cp django xcode
+    tmux osx ruby pyenv python
+    zsh-syntax-highlighting zsh-autosuggestions)
 
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -24,6 +26,8 @@ export LANG=en_US.UTF-8
 
 # pyenv init
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 export EDITOR='nvim'
 
 # Skip forward/back a word with opt-arrow

@@ -82,6 +82,7 @@ cask 'microsoft-office'
 cask 'KeepingYouAwake'
 cask 'the-unarchiver'
 cask 'genymotion'
+cask 'hex-fiend'
 
 # cask fonts
 cask 'font-d2coding'

@@ -115,6 +115,7 @@ brew 'homebrew/php/boris'
 brew 'homebrew/science/fqzcomp'
 brew 'homebrew/versions/libxml278'
 brew 'neovim/neovim/neovim'
+brew 'gureumkim'
 
 # cask applications
 cask 'adobe-illustrator-cc'

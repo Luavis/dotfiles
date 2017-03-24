@@ -83,6 +83,7 @@ cask 'KeepingYouAwake'
 cask 'the-unarchiver'
 cask 'genymotion'
 cask 'hex-fiend'
+cask 'gureumkim'
 
 # cask fonts
 cask 'font-d2coding'

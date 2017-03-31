@@ -150,6 +150,8 @@ cask 'tower'
 cask 'utorrent'
 cask 'virtualbox'
 cask 'xamarin-studio'
+cask 'Caskroom/cask/xquartz'
+brew 'r'  # install R after xquartz
 
 # cask fonts
 cask 'font-d2coding'

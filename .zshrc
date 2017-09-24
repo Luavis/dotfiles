@@ -28,6 +28,9 @@ export LANG=en_US.UTF-8
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+# set brew make job
+export HOMEBREW_MAKE_JOBS=1
+
 export EDITOR='nvim'
 
 # Skip forward/back a word with opt-arrow

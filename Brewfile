@@ -151,6 +151,7 @@ cask 'utorrent'
 cask 'virtualbox'
 cask 'xamarin-studio'
 cask 'rstudio'
+cask 'flux'
 
 # cask fonts
 cask 'font-d2coding'

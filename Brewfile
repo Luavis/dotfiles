@@ -156,7 +156,7 @@ cask 'flux'
 # cask fonts
 cask 'font-d2coding'
 cask 'font-hack'
-cask 'font-meslo-lg-for-powerline'
+cask 'font-meslo-for-powerline'
 cask 'font-nanumgothic'
 cask 'font-nanummyeongjo'
 cask 'font-noto-sans-cjk-kr'

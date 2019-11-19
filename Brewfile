@@ -1,181 +1,150 @@
-# tap brew
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "neovim/neovim"
 
-tap 'caskroom/cask'
-tap 'caskroom/fonts'
-tap 'caskroom/versions'
+brew "libpng"
+brew "freetype"
+brew "fontconfig"
+brew "gettext"
+brew "libffi"
+brew "pcre"
+brew "sqlite"
+brew "xz"
+brew "glib"
+brew "cairo"
+brew "jpeg"
+brew "libtiff"
+brew "icu4c"
+brew "harfbuzz"
+brew "pango"
+brew "amazon-ecs-cli"
+brew "ansible"
+brew "atk"
+brew "autoconf"
+brew "automake"
+brew "autojump"
+brew "awscli"
+brew "axel"
+brew "bat"
+brew "buildkit"
+brew "cmake"
+brew "mpfr"
+brew "libmpc"
+brew "gcc"
+brew "libtool"
+brew "cfssl"
+brew "click"
+brew "coreutils"
+brew "jemalloc"
+brew "openssl@1.1"
+brew "libevent"
+brew "libidn"
+brew "dockutil"
+brew "libunistring"
+brew "libtasn1"
+brew "nettle"
+brew "p11-kit"
+brew "gnutls"
+brew "findutils"
+brew "unixodbc"
+brew "fx"
+brew "fzf"
+brew "git"
+brew "git-lfs"
+brew "gnu-sed"
+brew "pkg-config"
+brew "gobject-introspection"
+brew "hicolor-icon-theme"
+brew "htop"
+brew "shared-mime-info"
+brew "imagemagick"
+brew "jenv"
+brew "jq"
+brew "kubectx"
+brew "kubernetes-helm"
+brew "libtermkey"
+brew "libuv"
+brew "libvterm"
+brew "libxml2"
+brew "lzlib"
+brew "mackup"
+brew "mas"
+brew "mercurial"
+brew "protobuf"
+brew "mitmproxy"
+brew "moreutils"
+brew "mosh"
+brew "msgpack"
+brew "unibilium"
+brew "neovim"
+brew "nmap"
+brew "qemu"
+brew "ripgrep"
+brew "skaffold"
+brew "telnet"
+brew "tldr"
+brew "tmux"
+brew "watchman"
+brew "wget"
+brew "xhyve", args: ["HEAD"]
+brew "zlib"
+brew "zsh"
 
-tap 'homebrew/bundle'
-tap 'homebrew/core'
-tap 'homebrew/dupes'
-tap 'homebrew/gui'
-tap 'homebrew/php'
-tap 'homebrew/science'
-tap 'homebrew/services'
-tap 'homebrew/versions'
-tap 'neovim/neovim'
+cask "arduino"
+cask "authy"
+cask "busycal"
+cask "chromedriver"
+cask "datagrip"
+cask "docker"
+cask "goland"
+cask "google-chrome"
+cask "google-cloud-sdk"
+cask "hex-fiend"
+cask "intellij-idea"
+cask "iterm2"
+cask "macdown"
+cask "microsoft-office"
+cask "notion"
+cask "paw"
+cask "slack"
+cask "telegram-desktop-dev"
+cask "the-unarchiver"
+cask "tower"
+cask "visual-studio-code"
+cask "zeplin"
+cask "keepingyouawake"
 
-cask_args appdir: '/Applications'
+cask "java"
+brew "node"
+brew "go"
+brew "python"
+brew "dep"
+brew "pipenv"
+brew "pyenv"
+brew "pyenv-virtualenv"
+brew "pypy"
 
-# brew install
-brew 'gettext'
-brew 'libffi'
-brew 'pcre'
-brew 'glib'
-brew 'libpng'
-brew 'freetype'
-brew 'fontconfig'
-brew 'pixman'
-brew 'cairo'
-brew 'git'
-brew 'pkg-config'
-brew 'gobject-introspection'
-brew 'atk'
-brew 'autoconf'
-brew 'automake'
-brew 'gmp@4'
-brew 'isl@0.12'
-brew 'cloog'
-brew 'cmake'
-brew 'coreutils'
-brew 'dockutil'
-brew 'findutils'
-brew 'mpfr@2'
-brew 'libmpc@0.8'
-brew 'gcc@4.9'
-brew 'gdbm'
-brew 'jpeg'
-brew 'libtiff'
-brew 'shared-mime-info'
-brew 'gdk-pixbuf'
-brew 'git-lfs'
-brew 'gmp'
-brew 'gnu-sed', args: ['with-default-names']
-brew 'libtasn1'
-brew 'libunistring'
-brew 'nettle'
-brew 'p11-kit'
-brew 'gnutls'
-brew 'go'
-brew 'gsettings-desktop-schemas'
-brew 'hicolor-icon-theme'
-brew 'icu4c'
-brew 'harfbuzz'
-brew 'pango'
-brew 'gtk+'
-brew 'libepoxy'
-brew 'gtk+3'
-brew 'py2cairo'
-brew 'openssl'
-brew 'readline'
-brew 'sqlite'
-brew 'python'
-brew 'pygobject'
-brew 'pygtk'
-brew 'gtk-mac-integration'
-brew 'icarus-verilog'
-brew 'jemalloc'
-brew 'libevent'
-brew 'libidn'
-brew 'mpfr'
-brew 'libmpc'
-brew 'libtermkey'
-brew 'libtool'
-brew 'libuv'
-brew 'libvterm'
-brew 'libxml2', args: ['with-python']
-brew 'lzlib'
-brew 'mackup'
-brew 'mas'
-brew 'mercurial'
-brew 'protobuf'
-brew 'mobile-shell'
-brew 'mongodb'
-brew 'moreutils'
-brew 'msgpack'
-brew 'mysql'
-brew 'nasm'
-brew 'openssl@1.1'
-brew 'nginx'
-brew 'node'
-brew 'pandoc'
-brew 'pyenv'
-brew 'pyenv-virtualenv'
-brew 'pypy'
-brew 'qemu'
-brew 'tig'
-brew 'tmux'
-brew 'unibilium'
-brew 'unixodbc'
-brew 'watchman'
-brew 'wget', args: ['with-iri']
-brew 'xz'
-brew 'zsh'
-brew 'homebrew/php/php70'
-brew 'homebrew/php/boris'
-brew 'homebrew/science/fqzcomp'
-brew 'homebrew/versions/libxml278'
-brew 'neovim/neovim/neovim'
-brew 'gureumkim'
+cask "font-d2coding"
+cask "font-hack"
+cask "font-meslo-for-powerline"
+cask "font-nanumgothic"
+cask "font-nanummyeongjo"
+cask "font-noto-sans-cjk-jp"
+cask "font-noto-sans-cjk-kr"
+cask "font-ubuntu"
 
-# cask applications
-cask 'adobe-illustrator-cc'
-cask 'adobe-photoshop-cc'
-cask 'adobe-photoshop-lightroom'
-cask 'adobe-photoshop-lightroom600'
-cask 'alcatraz'
-cask 'android-studio'
-cask 'arduino'
-cask 'busycal'
-cask 'genymotion'
-cask 'google-chrome'
-cask 'gpgtools'
-cask 'hex-fiend'
-cask 'hyper'
-cask 'intellij-idea-ce'
-cask 'istat-menus'
-cask 'iterm2'
-cask 'java'
-cask 'keepingyouawake'
-cask 'macdown'
-cask 'macspice'
-cask 'microsoft-office'
-cask 'mono-mdk'
-cask 'paw'
-cask 'santa'
-cask 'sqlitebrowser'
-cask 'sublime-text-dev'
-cask 'telegram-desktop-dev'
-cask 'the-unarchiver'
-cask 'tower'
-cask 'utorrent'
-cask 'virtualbox'
-cask 'xamarin-studio'
-cask 'rstudio'
-cask 'flux'
-
-# cask fonts
-cask 'font-d2coding'
-cask 'font-hack'
-cask 'font-meslo-for-powerline'
-cask 'font-nanumgothic'
-cask 'font-nanummyeongjo'
-cask 'font-noto-sans-cjk-kr'
-
-# Mac app store application
-mas 'Movist', id: 461788075
-mas 'Xcode', id: 497799835
-mas 'KakaoTalk', id: 869223134
-mas 'Keynote', id: 409183694
-mas 'iMovie', id: 408981434
-mas 'Microsoft Remote Desktop', id: 715768417
-mas 'Elmedia Video Player', id: 1044549675
-mas 'Transmit', id: 403388562
-mas 'Toad', id: 747961939
-mas 'Expressions', id: 913158085
-mas 'iCircuit', id: 454347770
-mas 'Pages', id: 409201541
-mas 'GarageBand', id: 682658836
-mas 'BetterSnapTool', id: 417375580
-mas 'Numbers', id: 409203825
-mas 'Boom 2', id: 948176063
-mas 'PopClip', id: 445189367
+mas "BetterSnapTool", id: 417375580
+mas "Boom 2", id: 948176063
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "KakaoTalk", id: 869223134
+mas "Keynote", id: 409183694
+mas "Movist", id: 461788075
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Transmit", id: 403388562
+mas "Jira", id: 454347770

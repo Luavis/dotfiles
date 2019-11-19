@@ -8,7 +8,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-scripts/Mustang2'
-Plug 'Railscasts-Theme-GUIand256color'
+Plug 'vim-scripts/Railscasts-Theme-GUIand256color'
 Plug 'vim-scripts/darktango.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'vim-scripts/xoria256.vim'
@@ -36,15 +36,13 @@ Plug 'rhysd/committia.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 
-Plug 'The-NERD-Tree'
+Plug 'vim-scripts/The-NERD-Tree'
 Plug 'Valloric/YouCompleteMe'
 
 function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-
-Plug 'wakatime/vim-wakatime'
 
 "End plugin list --------------------------------------------------------------
 call plug#end()

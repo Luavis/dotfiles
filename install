@@ -45,7 +45,6 @@ function realpath {
 # Install scripts
 ##############################################################
 
-
 xcode_command_line_install() {
     # check xcode commandline is pre-installed
     local xcode_installed=$(xcode-select -p 2>/dev/null)
@@ -71,14 +70,13 @@ brew_install() {
     fi
 }
 
-
 run_brew_script() {
     # download brewfile
     print_install "brews"
     # update latest homebrew
     brew update
     # upgrade all package
-    brew upgrade --all
+    brew upgrade
 
     brew bundle
     brew cleanup
@@ -86,36 +84,10 @@ run_brew_script() {
     sudo xcodebuild -license accept
 }
 
-
-_setting() {
-    print_install "Setting sublime text 3"
-
-    # install package control
-    curl -fsSL https://sublime.wbond.net/Package%20Control.sublime-package > \
-    "$HOME/Library/Application Support/Sublime Text 3/Installed Packages/Package Control.sublime-package"
-}
-
-
-source_input_setting() {
-    print_install "Setting macOS source input"
-    curl -fsSL http://data.luavis.kr/com.apple.HIToolbox.plist > \
-      /tmp/com.apple.HIToolbox.plist
-    sudo cp /tmp/com.apple.HIToolbox.plist /Library/Preferences
-    sudo chmod 644 /Library/Preferences/com.apple.HIToolbox.plist
-    curl -fsSL http://data.luavis.kr/user-com.apple.HIToolbox.plist > \
-      /tmp/com.apple.HIToolbox.plist
-    cp /tmp/com.apple.HIToolbox.plist ~/Library/Preferences
-    chmod 644 ~/Library/Preferences/com.apple.HIToolbox.plist
-    rm /tmp/com.apple.HIToolbox.plist
-}
-
 nvim_setting() {
     # Install neovim-python; vim-plug requires neovim-python
-    if [[ "$(which pip2)" != "" ]]; then
-        pip2 install --user neovim jedi
-    elif [[ "$(which pip3)" != "" ]]; then
-        pip3 install --user neovim jedi
-    elif [[ "$(which pip)" != "" ]]; then
+    sudo easy_install pip
+    if [[ "$(which pip)" != "" ]]; then
         pip install --user neovim jedi
     else
         echo 'You need to install python-pip first'
@@ -128,6 +100,17 @@ nvim_setting() {
     nvim +PlugInstall +PlugUpdate +PlugClean! +qall
 }
 
+vscode_setting() {
+    code --install-extension ms-vscode.python
+    code --install-extension ms-vscode.Go
+    code --install-extension ms-vscode.vscode-typescript-tslint-plugin
+    code --install-extension Equinusocio.vsc-material-theme
+    code --install-extension ms-azuretools.vscode-docker
+    code --install-extension basdp.language-gas-x86
+    code --install-extension PKief.material-icon-theme
+
+    cp ./vscode_settings.json "$HOME/Library/Application Support/Code/User/settings.json"
+}
 
 run_ext_scripts() {
     print_install "Run ext scripts"
@@ -144,36 +127,30 @@ run_ext_scripts() {
     done
 }
 
-
 setup() {
     print_install "Install oh-my-zsh"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     # install ZSH Theme
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zdharma/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
     print_install "Change user shell to zsh"
     chsh -s /bin/zsh
     print_install "Copy dotfiles"
-    cp .zshrc ~/.zshrc
-    cp .aliases ~/.aliases
-    cp .functions ~/.functions
-    cp .exports ~/.exports
-    cp .gitconfig ~/.gitconfig
-    cp .gitignore ~/.gitignore
-    cp .tmux.conf ~/.tmux.conf
+    cp .zshrc "${HOME}/.zshrc"
+    cp .aliases "${HOME}/.aliases"
+    cp .functions "${HOME}/.functions"
+    cp .exports "${HOME}/.exports"
+    cp .gitconfig "${HOME}/.gitconfig"
+    cp .gitignore "${HOME}/.gitignore"
+    cp .tmux.conf "${HOME}/.tmux.conf"
+    cp .fzf.zsh "${HOME}/.fzf.zsh"
 
     print_install "Run .macos"
 
     # Run settingup macos
-    ./.macos
-    # reboot for source input apply
-    read -r -p "Do you want to create ssh key? [y/N] " response
-    case $response in
-        [yY][eE][sS]|[yY])
-        ssh-keygen -t rsa
-        ;;
-    esac
+    # ./.macos
+
     read -r -p "Do you want reboot system? [y/N] " response
     case $response in
         [yY][eE][sS]|[yY])
@@ -181,6 +158,7 @@ setup() {
         ;;
     esac
 }
+
 help() {
     print_blue "Luavis dotfiles"
     echo ""
@@ -192,7 +170,7 @@ help() {
     echo "xcode         Run xcode command line install, if it is not installed"
     echo "brew          Install brew from internet"
     echo "brew_bundle       Run brew bundle"
-    echo "sublime           Config sublime text editor preferences"
+    echo "vscode           Config vscode editor preferences"
     echo "nvim          Config nvim preferences"
     echo "dots          Copy dotfiles and run .macos"
     echo "ext           Run ext scripts in ext directory"
@@ -200,15 +178,13 @@ help() {
     exit 0
 }
 
-
 if [ "$1" = "" ]; then
     # sudo mode
     sudo -v
     xcode_command_line_install
     brew_install
     run_brew_script
-    sublime_setting
-    source_input_setting
+    vscode_setting
     nvim_setting
     run_ext_scripts
 
@@ -229,13 +205,13 @@ else
         sudo -v
         run_brew_script
         ;;
-        sublime)
-        sudo -v
-        sublime_setting
-        ;;
         nvim)
         sudo -v
         nvim_setting
+        ;;
+        vscode)
+        sudo -v
+        vscode_setting
         ;;
         ext)
         sudo -v

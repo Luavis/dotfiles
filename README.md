@@ -12,10 +12,9 @@ Option:
 xcode           Run xcode command line install, if it is not installed
 brew            Install brew from internet
 brew_bundle     Run brew bundle
-sublime         Config sublime text editor preferences
+vscode          Config vscode text editor preferences
 nvim            Config nvim preferences
 dots            Copy dotfiles and run .macos
 ext             Run ext scripts in ext directory
 help            Print this help message and exit
-
 ```

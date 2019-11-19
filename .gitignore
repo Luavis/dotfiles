@@ -21,3 +21,6 @@ Thumbs.db
 # Git
 .gitignore
 
+# node
+node_modules
+

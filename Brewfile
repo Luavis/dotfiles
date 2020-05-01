@@ -117,6 +117,7 @@ cask "tower"
 cask "visual-studio-code"
 cask "zeplin"
 cask "keepingyouawake"
+cask "rocket"
 
 cask "java"
 brew "node"

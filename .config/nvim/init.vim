@@ -5,44 +5,20 @@ set nocompatible
 call plug#begin('~/.config/nvim/plugged')
 
 "Plugin list ------------------------------------------------------------------
-
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-scripts/Mustang2'
-Plug 'vim-scripts/Railscasts-Theme-GUIand256color'
-Plug 'vim-scripts/darktango.vim'
 Plug 'junegunn/seoul256.vim'
-Plug 'vim-scripts/xoria256.vim'
-Plug 'jdkanani/vim-material-theme'
-Plug 'chriskempson/tomorrow-theme'
 
-Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'othree/html5.vim'
 Plug 'lepture/vim-jinja'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
-Plug 'cstrahan/vim-capnp'
-Plug 'neovimhaskell/haskell-vim'
-Plug 'pbrisbin/vim-syntax-shakespeare'
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'bling/vim-airline'
-Plug 'scrooloose/syntastic'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimfiler.vim'
-Plug 'simnalamburt/vim-mundo'
-Plug 'davidhalter/jedi-vim'
-Plug 'rhysd/committia.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-
 Plug 'vim-scripts/The-NERD-Tree'
-Plug 'Valloric/YouCompleteMe'
 
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 "End plugin list --------------------------------------------------------------
 call plug#end()
@@ -84,15 +60,15 @@ set tabpagemax=25
 
 filetype plugin on
 
-set bg=dark
-let g:solarized_termcolors=256
-colorscheme solarized
-
+set mouse=an
 
 let g:committia_open_only_vim_starting=0
 
-set gfn=D2Coding:h13
-map <F3> :NERDTreeToggle<cr>
+"Theme settings
+let g:seoul256_background = 235
+colo seoul256
+set background=dark
+set nopaste
 
 "Some additional syntax highlighters.
 au! BufRead,BufNewFile *.wsgi setfiletype python
@@ -137,11 +113,12 @@ augroup END
 "English spelling checker.
 setlocal spelllang=en_us
 
-"Keep 80 columns.
-set colorcolumn=80
+"Keep 80,120 columns.
+set colorcolumn=80,120
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 autocmd WinEnter * match OverLength /\%81v.\+/
+hi! ColorColumn ctermbg=bg
 
 "I dislike folding.
 set nofoldenable
@@ -177,29 +154,45 @@ endif
 "vim-airline
 let g:airline_powerline_fonts = 1
 
-"Mundo -- Undo tree visualization
-set undofile
-set undodir=~/.config/nvim/undo
-nnoremap <F5> :MundoToggle<CR>
-let g:mundo_right=1
-
-"Use Vimfiler as default explorer like netrw
-let g:vimfiler_as_default_explorer = 1
-
 hi DiffAdd cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
 hi DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
 hi DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
 hi DiffText cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
-
-set background=dark
-colorscheme tomorrow
-set nopaste
 
 "Move tab next-previous
 nnoremap <C-S-Left> :tabprevious<CR>
 nnoremap <C-S-Right> :tabnext<CR>
 nnoremap <F4> :bel sp 50 \| resize 10 \| terminal<CR>
 
-"nnoremap <C-S-T>    :tabe<CR>
-"nnoremap <C-W>      :q<CR>
+"NerdTree
+let g:NERDTreeWinPos = "left"
+map <F3> :NERDTreeToggle<cr>
+autocmd VimEnter * NERDTree | wincmd p
+
+function! s:CloseIfOnlyControlWinLeft()
+  if winnr("$") != 1
+    return
+  endif
+  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+        \ || &buftype == 'quickfix'
+    q
+  endif
+endfunction
+
+augroup CloseIfOnlyControlWinLeft
+  au!
+  au BufEnter * call s:CloseIfOnlyControlWinLeft()
+augroup END
+
+"Remove tilde
+hi! EndOfBuffer ctermfg=bg ctermbg=bg guifg=bg guibg=bg
+
+"Split line style
+hi! VertSplit ctermfg=bg ctermbg=240 guifg=bg guibg=bg
+
+"Use OS clipboard
+set clipboard=unnamed
+
+"Keyword settings
+set iskeyword=@,48-57,192-255
 

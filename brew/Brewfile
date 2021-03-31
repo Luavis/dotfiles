@@ -1,0 +1,82 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "neovim/neovim"
+
+brew "zsh"
+brew "neovim"
+brew "nmap"
+brew "watchman"
+brew "gnu-sed"
+brew "ripgrep"
+brew "telnet"
+brew "sqlite"
+brew "mycli"
+
+brew "tldr"
+brew "bat"
+brew "htop"
+brew "xhyve"
+brew "jq"
+brew "fzf"
+brew "autojump"
+brew "mas"
+brew "mitmproxy"
+brew "tmux"
+brew "wget"
+
+brew "git"
+brew "git-lfs"
+
+brew "awscli"
+brew "kubectx"
+brew "kubernetes-helm"
+
+brew "http"
+brew "lazygit"
+brew "jenv"
+brew "node"
+brew "go"
+brew "python"
+brew "dep"
+brew "pipenv"
+brew "pyenv"
+brew "pyenv-virtualenv"
+
+cask "font-d2coding"
+cask "font-hack"
+cask "font-meslo-for-powerline"
+cask "font-nanumgothic"
+cask "font-nanummyeongjo"
+cask "font-noto-sans-cjk-jp"
+cask "font-noto-sans-cjk-kr"
+
+cask "adoptopenjdk8"
+cask "java"
+
+cask "authy"
+cask "docker"
+cask "google-chrome"
+cask "hex-fiend"
+cask "intellij-idea"
+cask "iterm2"
+cask "microsoft-office"
+cask "notion"
+cask "slack"
+cask "telegram-desktop-dev"
+cask "the-unarchiver"
+cask "visual-studio-code"
+cask "keepingyouawake"
+cask "db-browser-for-sqlite"
+cask "jd-gui"
+
+mas "KakaoTalk", id: 869223134
+mas "BetterSnapTool", id: 417375580
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Movist", id: 461788075
+mas "Transmit", id: 403388562

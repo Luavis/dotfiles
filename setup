@@ -1,0 +1,99 @@
+#!/bin/sh
+
+abspath() {
+    pushd "$1" &> /dev/null
+    if [[ $? != 0 ]]; then
+        return 1;
+    fi
+    pwd -P
+    exit_code=$?
+    popd &> /dev/null
+    return ${exit_code}
+}
+
+print_error() {
+    local msg=$1
+    echo "\033[0;31m${msg}\033[0m"
+}
+
+print_blue() {
+    local msg=$1
+    echo "\033[1;34m${msg}\033[0m"
+}
+
+print_green() {
+    local msg=$1
+    echo "\033[0;32m${msg}\033[0m"
+}
+
+print_log() {
+    local msg="$1 "
+    local status=" [$2]"
+    columns=$(tput cols)
+    msg_width="${#msg}"
+    status_width="${#status}"
+    adjust=$(( (columns - (msg_width + status_width) ) ))
+    printf "$msg"
+    printf '%*s' "$adjust" | tr ' ' '.'
+    printf "$status"
+}
+
+log_skip() {
+    print_log "$1" 'Skip'
+}
+
+log_ok() {
+    print_log "$1" 'OK'
+}
+
+# macos
+install_xcode_command_line() {
+    # check xcode commandline is pre-installed
+    local xcode_installed=$(xcode-select -p 2>/dev/null)
+    if [ "$xcode_installed" = "" ]; then
+        xcode-select --install
+        echo "Try again after install xcode-select"
+        exit 1
+    else
+        log_skip "Xcode command line tool"
+    fi
+}
+
+install_homebrew() {
+    local brew_installed=$(brew --version 2>/dev/null)
+    if [[ "$brew_installed" = "" ]]; then
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        log_ok "Homebrew"
+    else
+        log_skip "Homebrew"
+    fi
+}
+
+install_brew_bundle() {
+    brew bundle --file "${pwd}/brew/Brewfile"
+}
+
+setup_macos() {
+    # install_xcode_command_line
+    # install_homebrew
+
+}
+
+setup() {
+    if [[ $(uname) = "Darwin" ]]; then
+        setup_macos
+    elif [[ $(uname) = "Linux" && -f /etc/arch-release ]]; then
+        echo "linux"
+    else
+        print_error "This script only support macOS or Arhclinux"
+        exit 1
+    fi
+}
+
+if [[ $EUID -ne 0 ]]; then
+    print_error "This script must be run as root"
+    exit 1
+else
+    setup
+fi
+

@@ -49,4 +49,12 @@
     "typescript.updateImportsOnFileMove.enabled": "always",
     "breadcrumbs.enabled": true,
     "explorer.confirmDragAndDrop": false,
+    "go.formatTool": "goimports",
+    "go.useLanguageServer": true,
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ]
 }

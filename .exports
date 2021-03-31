@@ -29,3 +29,28 @@ export LESS_TERMCAP_md="${yellow}";
 # Don’t clear the screen after quitting a manual page.
 export MANPAGER='less -X';
 
+export FZF_BASE=/usr/local/bin/fzf
+
+# zsh config
+export UPDATE_ZSH_DAYS=13
+export DISABLE_LS_COLORS="false"
+export ENABLE_CORRECTION="false"
+export COMPLETION_WAITING_DOTS="true"
+export HIST_STAMPS="yyyy-mm-dd"
+
+export CASE_SENSITIVE="false"
+
+# Homebrew
+export HOMEBREW_MAKE_JOBS=$(nproc)
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Go lang
+export GOROOT=/usr/local/opt/go/libexec
+export GOPATH=$HOME/Projects/go
+export GO111MODULE=on
+
+# Python crash in specific version
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# FZF
+export FZF_DEFAULT_OPTS='--height 30% --layout=reverse'

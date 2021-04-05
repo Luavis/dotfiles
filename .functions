@@ -9,8 +9,6 @@ kc() {
     fi
 }
 
-unalias kgp
-
 kgp() {
     kubectl get pods | fzf --header-lines=1 | awk '{ print $1 }'
 }

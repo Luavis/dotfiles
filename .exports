@@ -41,7 +41,7 @@ export HIST_STAMPS="yyyy-mm-dd"
 export CASE_SENSITIVE="false"
 
 # Homebrew
-export HOMEBREW_MAKE_JOBS=$(nproc)
+export HOMEBREW_MAKE_JOBS=$(sysctl -n hw.physicalcpu)
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Go lang

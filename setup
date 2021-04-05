@@ -62,7 +62,7 @@ install_xcode_command_line() {
 install_homebrew() {
     local brew_installed=$(brew --version 2>/dev/null)
     if [[ "$brew_installed" = "" ]]; then
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        sudo -u "$(logname)" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         log_ok "Homebrew"
     else
         log_skip "Homebrew"
@@ -70,20 +70,97 @@ install_homebrew() {
 }
 
 install_brew_bundle() {
-    brew bundle --file "${pwd}/brew/Brewfile"
+    caffeinate -i sudo -u "$(logname)" brew bundle --file "$(pwd)/brew/Brewfile"
+    log_ok "Install brew bundles"
+}
+
+change_shell() {
+    chsh -s $(which zsh) "$(logname)"
+    log_ok "Change shell"
+}
+
+install_omz() {
+    if [[ -d "$HOME/.oh-my-zsh" ]]; then
+        log_skip "Oh My Zsh"
+    else
+        sudo -u "$(logname)" RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        log_ok "Oh My Zsh"
+    fi
+}
+
+install_zsh_plugins() {
+    FAST_SYNTAX_HIGHLIGHTING_PATH="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting"
+    AUTO_SUGGESTIONS_PATH="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+    if [ -d "$FAST_SYNTAX_HIGHLIGHTING_PATH" ]; then
+        log_skip "Install zsh - fast syntax highlighting"
+    else
+        # fast syntax highlighting
+        git clone https://github.com/zdharma/fast-syntax-highlighting.git "$FAST_SYNTAX_HIGHLIGHTING_PATH"
+        log_ok "Install zsh plugin - fast syntax highlighting"
+    fi
+
+    if [ -d "$AUTO_SUGGESTIONS_PATH" ]; then
+        log_skip "Install zsh - auto suggestions"
+    else
+        # auto suggestions
+        git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTO_SUGGESTIONS_PATH"
+        log_ok "Install zsh - auto suggestions"
+    fi
+}
+
+copy_dotfiles() {
+    find . -name ".*" ! -path . ! -name '.DS_Store' ! -name '.git' -exec cp -r "{}" "$HOME/" \;
+    log_ok "Copy dotfiles"
+}
+
+audit_zsh() {
+    chmod g-w,o-w /usr/local/share/zsh
+    chmod g-w,o-w /usr/local/share/zsh/site-functions
+    log_ok "Audit zsh"
+}
+
+install_vim_plug() {
+    sudo -u "$(logname)" sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    nvim +PlugInstall +PlugUpdate +PlugClean! +qall
+}
+
+mkdirs() {
+    if [ ! -d "$HOME/Projects" ]; then
+        mkdir "$HOME/Projects"
+    fi
+    log_ok "Set directories"
+}
+
+setup_vscode() {
+    code --install-extension ms-python.python
+    code --install-extension golang.go
+    code --install-extension Equinusocio.vsc-material-theme
+    code --install-extension pkief.material-icon-theme
+    cp './vscode/settings.json' "$HOME/Library/Application Support/Code/User/settings.json"
+    log_ok "Set up vscode"
 }
 
 setup_macos() {
-    # install_xcode_command_line
-    # install_homebrew
+    install_xcode_command_line
+    install_homebrew
+    install_brew_bundle
+    change_shell
+    install_omz
+    install_zsh_plugins
+    copy_dotfiles
+    audit_zsh
+    install_vim_plug
+    setup_vscode
 
+    mkdirs
 }
 
 setup() {
     if [[ $(uname) = "Darwin" ]]; then
         setup_macos
     elif [[ $(uname) = "Linux" && -f /etc/arch-release ]]; then
-        echo "linux"
+        echo "not implemented"
     else
         print_error "This script only support macOS or Arhclinux"
         exit 1

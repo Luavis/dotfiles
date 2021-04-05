@@ -12,7 +12,7 @@ alias reload="exec $SHELL -l"
 
 alias g="git"
 alias h="history"
-alias j="jobs"
+alias jb="jobs"
 
 # Detect which `ls` flavor is in use
 if [[ "$OSTYPE" == "darwin"* ]]; then # macOS `ls`

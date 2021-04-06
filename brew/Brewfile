@@ -37,6 +37,7 @@ brew "awscli"
 brew "kubectx"
 brew "kubernetes-helm"
 brew "kube-ps1"
+brew "k9s"
 brew "vault"
 
 brew "httpie"

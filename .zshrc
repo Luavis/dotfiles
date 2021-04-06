@@ -30,6 +30,9 @@ eval "$(jenv init -)"
 # fzf options
 source ~/.fzf.zsh
 
+# kafkactl
+source <(kafkactl completion zsh)
+
 # kube-ps1
 export KUBE_PS1_NS_ENABLE=false
 export KUBE_PS1_SEPARATOR='> '

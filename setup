@@ -129,6 +129,11 @@ mkdirs() {
     if [ ! -d "$HOME/Projects" ]; then
         mkdir "$HOME/Projects"
     fi
+
+    if [ ! -d "$HOME/Projects/go" ]; then
+        mkdir "$HOME/Projects/go"
+    fi
+
     log_ok "Set directories"
 }
 

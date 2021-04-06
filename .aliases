@@ -52,3 +52,5 @@ alias vi="nvim"
 alias nproc="sysctl -n hw.physicalcpu"
 
 alias lg=lazygit
+alias kf=kafkactl
+

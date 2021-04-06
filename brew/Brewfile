@@ -6,6 +6,9 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "neovim/neovim"
 
+# kafkactl
+tap "deviceinsight/packages"
+
 brew "zsh"
 brew "neovim"
 brew "nmap"
@@ -39,6 +42,7 @@ brew "kubernetes-helm"
 brew "kube-ps1"
 brew "k9s"
 brew "vault"
+brew "kafkactl"
 
 brew "httpie"
 brew "lazygit"

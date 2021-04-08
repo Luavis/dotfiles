@@ -138,13 +138,13 @@ mkdirs() {
 }
 
 setup_vscode() {
-    code --install-extension ms-python.python
-    code --install-extension ms-vscode.sublime-keybindings
-    code --install-extension golang.go
-    code --install-extension Equinusocio.vsc-material-theme
-    code --install-extension pkief.material-icon-theme
+    sudo -u "$(logname)" code --install-extension ms-python.python
+    sudo -u "$(logname)" code --install-extension ms-vscode.sublime-keybindings
+    sudo -u "$(logname)" code --install-extension golang.go
+    sudo -u "$(logname)" code --install-extension Equinusocio.vsc-material-theme
+    sudo -u "$(logname)" code --install-extension pkief.material-icon-theme
 
-    cp './vscode/settings.json' "$HOME/Library/Application Support/Code/User/settings.json"
+    sudo -u "$(logname)" cp './vscode/settings.json' "$HOME/Library/Application Support/Code/User/settings.json"
     log_ok "Set up vscode"
 }
 

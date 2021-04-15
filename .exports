@@ -45,8 +45,9 @@ export HOMEBREW_MAKE_JOBS=$(sysctl -n hw.physicalcpu)
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Go lang
-export GOROOT=/usr/local/opt/go/libexec
+export GOROOT=$(brew --prefix)/opt/go/libexec
 export GOPATH=$HOME/Projects/go
+export GOBIN=$GOPATH/bin
 export GO111MODULE=on
 
 # Python crash in specific version
@@ -54,3 +55,4 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # FZF
 export FZF_DEFAULT_OPTS='--height 30% --layout=reverse'
+

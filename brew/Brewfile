@@ -45,6 +45,8 @@ brew "vault"
 brew "kafkactl"
 
 brew "httpie"
+brew "websocat"
+
 brew "lazygit"
 brew "jenv"
 brew "node"

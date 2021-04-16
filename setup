@@ -109,7 +109,7 @@ install_zsh_plugins() {
 }
 
 copy_dotfiles() {
-    find . -name ".*" ! -path . ! -name '.DS_Store' ! -name '.git' -exec cp -r "{}" "$HOME/" \;
+    sudo -u "$(logname)" find . -name ".*" ! -path . ! -name '.DS_Store' ! -name '.git' -exec cp -r "{}" "$HOME/" \;
     log_ok "Copy dotfiles"
 }
 
@@ -127,11 +127,11 @@ install_vim_plug() {
 
 mkdirs() {
     if [ ! -d "$HOME/Projects" ]; then
-        mkdir "$HOME/Projects"
+        sudo -u "$(logname)" mkdir "$HOME/Projects"
     fi
 
     if [ ! -d "$HOME/Projects/go" ]; then
-        mkdir "$HOME/Projects/go"
+        sudo -u "$(logname)" mkdir "$HOME/Projects/go"
     fi
 
     log_ok "Set directories"
@@ -143,6 +143,7 @@ setup_vscode() {
     sudo -u "$(logname)" code --install-extension golang.go
     sudo -u "$(logname)" code --install-extension Equinusocio.vsc-material-theme
     sudo -u "$(logname)" code --install-extension pkief.material-icon-theme
+    sudo -u "$(logname)" code --install-extension peterj.proto
 
     sudo -u "$(logname)" cp './vscode/settings.json' "$HOME/Library/Application Support/Code/User/settings.json"
     log_ok "Set up vscode"

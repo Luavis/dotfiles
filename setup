@@ -148,6 +148,11 @@ setup_vscode() {
     log_ok "Set up vscode"
 }
 
+run_macos() {
+    sudo -u "$(logname)" ./macos/change_hires
+    sudo -u "$(logname)" ./macos/.macos
+}
+
 setup_macos() {
     install_xcode_command_line
     install_homebrew
@@ -159,6 +164,8 @@ setup_macos() {
     audit_zsh
     install_vim_plug
     setup_vscode
+
+    run_macos
 
     mkdirs
 }

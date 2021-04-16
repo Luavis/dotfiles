@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until `.osx` has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+# Remap capslock key to Ctrl
+hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}'
+
+defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
+defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
+
+sudo pmset -a standbydelay 86400
+sudo nvram SystemAudioVolume=" "
+
+defaults write -g AppleInterfaceStyle -string Dark
+# Set highlight color to green
+defaults write -g AppleHighlightColor -string "0.764700 0.976500 0.568600"
+defaults write -g AppleShowScrollBars -string "WhenScrolling"
+defaults write -g ApplePressAndHoldEnabled -bool false
+defaults write -g AppleLocale -string "en_KR"
+defaults write -g AppleLanguages -array "en-KR" "ko-KR"
+defaults write -g AppleLocale -string "en_US@currency=KRW"
+defaults write -g AppleMeasurementUnits -string "Centimeters"
+defaults write -g AppleTemperatureUnit -string "Celsius"
+defaults write -g AppleMetricUnits -bool true
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+sudo systemsetup -settimezone "Asia/Seoul" > /dev/null
+
+
+sudo systemsetup -setcomputersleep Off > /dev/null
+
+# Disable hibernation (speeds up entering sleep mode)
+sudo pmset -a hibernatemode 0
+
+# Remove the sleep image file to save disk space
+sudo rm /private/var/vm/sleepimage
+# Create a zero-byte file instead…
+sudo touch /private/var/vm/sleepimage
+# …and make sure it can’t be rewritten
+sudo chflags uchg /private/var/vm/sleepimage
+
+# Disable the sudden motion sensor as it’s not useful for SSDs
+sudo pmset -a sms 0
+
+# Trackpad/Mouse settings
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad HIDScrollZoomModifierMask -int 262144
+defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseOneFingerDoubleTapGesture -int 1
+defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string "TwoButton"
+
+# Accessibility
+defaults write com.apple.Accessibility KeyRepeatDelay -string "0.25";
+defaults write com.apple.Accessibility KeyRepeatEnabled -bool true;
+defaults write com.apple.Accessibility KeyRepeatInterval -bool "0.0333";
+defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+# Automatically hide and show the Dock
+defaults write com.apple.dock autohide -bool true
+
+# Finder
+defaults write com.apple.finder QuitMenuItem -bool true
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+
+# Dock
+defaults write com.apple.Dock showhidden -bool yes
+defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>/Applications/VLC.app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"; killall Dock
+

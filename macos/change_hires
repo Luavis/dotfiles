@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+import Quartz
+
+
+def is_hidpi(mode):
+    width = Quartz.CGDisplayModeGetWidth(mode)
+    height = Quartz.CGDisplayModeGetHeight(mode)
+    max_width = Quartz.CGDisplayModeGetPixelWidth(mode)
+    max_height = Quartz.CGDisplayModeGetPixelHeight(mode)
+
+    return width != max_width and height != max_height
+
+def main():
+    display_id = Quartz.CGMainDisplayID()
+    options = {Quartz.kCGDisplayShowDuplicateLowResolutionModes: True}
+    modes = Quartz.CGDisplayCopyAllDisplayModes(display_id, options)
+    hi_modes = list(filter(is_hidpi, modes))
+    resolutions = [Quartz.CGDisplayModeGetWidth(mode) * Quartz.CGDisplayModeGetHeight(mode) for mode in hi_modes]
+    idx = resolutions.index(max(resolutions))
+    highest_mode = hi_modes[idx]
+    (err, config_ref) = Quartz.CGBeginDisplayConfiguration(None)
+    if err != None:
+        print(err)
+        return
+
+    err = Quartz.CGConfigureDisplayWithDisplayMode(config_ref, display_id, highest_mode, None)
+    if err != None:
+        print(err)
+        return
+
+    Quartz.CGCompleteDisplayConfiguration(config_ref, Quartz.kCGConfigurePermanently)
+
+if __name__ == '__main__':
+    main()

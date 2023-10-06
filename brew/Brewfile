@@ -37,8 +37,7 @@ brew "svn"
 brew "git-lfs"
 
 brew "awscli"
-brew "kubectx"
-brew "kubernetes-helm"
+brew "helm"
 brew "kube-ps1"
 brew "k9s"
 brew "vault"
@@ -52,10 +51,9 @@ brew "jenv"
 brew "node"
 brew "go"
 brew "python"
-brew "dep"
-brew "pipenv"
 brew "pyenv"
-brew "pyenv-virtualenv"
+brew "nodenv"
+brew "cmake"
 
 cask "font-d2coding"
 cask "font-hack"
@@ -65,28 +63,17 @@ cask "font-nanum-myeongjo"
 cask "font-noto-sans-cjk-jp"
 cask "font-noto-sans-cjk-kr"
 
-cask "adoptopenjdk8"
+cask "temurin8"
 
 cask "authy"
 cask "docker"
 cask "google-chrome"
-cask "hex-fiend"
-cask "intellij-idea"
 cask "iterm2"
-cask "microsoft-office"
 cask "notion"
 cask "slack"
-cask "telegram-desktop-dev"
 cask "the-unarchiver"
 cask "visual-studio-code"
 cask "keepingyouawake"
 cask "db-browser-for-sqlite"
-cask "jd-gui"
-
-mas "KakaoTalk", id: 869223134
-mas "BetterSnapTool", id: 417375580
-mas "Keynote", id: 409183694
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Movist", id: 461788075
-mas "Transmit", id: 403388562
+cask "httpie"
+cask "transmit"

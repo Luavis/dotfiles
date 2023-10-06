@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e
+
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 abspath() {
     pushd "$1" &> /dev/null
@@ -75,8 +80,12 @@ install_brew_bundle() {
 }
 
 change_shell() {
-    chsh -s $(which zsh) "$(logname)"
-    log_ok "Change shell"
+    if [ $SHELL != "/bin/zsh" ]; then
+        chsh -s /bin/zsh "$(logname)"
+        log_ok "Change shell"
+    else
+        log_skip "Change shell"
+    fi
 }
 
 install_omz() {
@@ -95,7 +104,7 @@ install_zsh_plugins() {
         log_skip "Install zsh - fast syntax highlighting"
     else
         # fast syntax highlighting
-        git clone https://github.com/zdharma/fast-syntax-highlighting.git "$FAST_SYNTAX_HIGHLIGHTING_PATH"
+        sudo -u "$(logname)" git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git "$FAST_SYNTAX_HIGHLIGHTING_PATH"
         log_ok "Install zsh plugin - fast syntax highlighting"
     fi
 
@@ -103,26 +112,39 @@ install_zsh_plugins() {
         log_skip "Install zsh - auto suggestions"
     else
         # auto suggestions
-        git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTO_SUGGESTIONS_PATH"
+        sudo -u "$(logname)" git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTO_SUGGESTIONS_PATH"
         log_ok "Install zsh - auto suggestions"
     fi
 }
 
 copy_dotfiles() {
-    sudo -u "$(logname)" find . -name ".*" ! -path . ! -name '.DS_Store' ! -name '.git' -exec cp -r "{}" "$HOME/" \;
+    sudo -u "$(logname)" find . -name ".*" -maxdepth 1 ! -path . ! -name '.DS_Store' ! -name '.git' -exec cp -r "{}" "$HOME/" \;
     log_ok "Copy dotfiles"
 }
 
-audit_zsh() {
-    chmod g-w,o-w /usr/local/share/zsh
-    chmod g-w,o-w /usr/local/share/zsh/site-functions
-    log_ok "Audit zsh"
+config_zsh() {
+    chmod g-w,o-w /opt/homebrew/bin/zsh
+    chmod g-w,o-w /opt/homebrew/share/zsh/site-functions
+    log_ok "Config zsh"
 }
 
 install_vim_plug() {
-    sudo -u "$(logname)" sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    nvim +PlugInstall +PlugUpdate +PlugClean! +qall
+    if ! [ -d ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
+        sudo -u "$(logname)" git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+    else
+        log_skip "install vim plug"
+    fi
+    sudo -u "$(logname)" nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+
+}
+
+install_rosetta() {
+    if ! (arch -arch x86_64 uname -m > /dev/null) ; then
+        softwareupdate --install-rosetta --agree-to-license
+        log_ok "rosetta installed"
+    else
+        log_skip "rosetta installed"
+    fi
 }
 
 mkdirs() {
@@ -138,37 +160,72 @@ mkdirs() {
 }
 
 setup_vscode() {
-    sudo -u "$(logname)" code --install-extension ms-python.python
-    sudo -u "$(logname)" code --install-extension ms-vscode.sublime-keybindings
-    sudo -u "$(logname)" code --install-extension golang.go
-    sudo -u "$(logname)" code --install-extension Equinusocio.vsc-material-theme
-    sudo -u "$(logname)" code --install-extension pkief.material-icon-theme
-    sudo -u "$(logname)" code --install-extension peterj.proto
+    EXTENSIONS=(
+        Equinusocio.vsc-community-material-theme
+        Equinusocio.vsc-material-theme
+        esbenp.prettier-vscode
+        golang.go
+        jpoissonnier.vscode-styled-components
+        ms-azuretools.vscode-docker
+        ms-python.isort
+        ms-python.python
+        ms-python.vscode-pylance
+        ms-toolsai.jupyter
+        ms-toolsai.jupyter-keymap
+        ms-toolsai.jupyter-renderers
+        ms-toolsai.vscode-jupyter-cell-tags
+        ms-toolsai.vscode-jupyter-slideshow
+        ms-vscode.cmake-tools
+        ms-vscode.cpptools
+        ms-vscode.cpptools-extension-pack
+        ms-vscode.cpptools-themes
+        ms-vscode.makefile-tools
+        ms-vscode.sublime-keybindings
+        peterj.proto
+        PKief.material-icon-theme
+        tamasfe.even-better-toml
+        twxs.cmake
+    )
+
+    for EXT in $EXTENSIONS; do
+        echo "$EXT"
+        sudo -u "$(logname)" code --install-extension "$EXT" --force
+    done
 
     sudo -u "$(logname)" cp './vscode/settings.json' "$HOME/Library/Application Support/Code/User/settings.json"
     log_ok "Set up vscode"
 }
 
+setup_iterm() {
+    cp ./iterm/com.googlecode.iterm2.plist ~/Library/Preferences
+}
+
 run_macos() {
-    sudo -u "$(logname)" ./macos/change_hires
-    sudo -u "$(logname)" ./macos/.macos
+    ./macos/.macos
 }
 
 setup_macos() {
     install_xcode_command_line
-    install_homebrew
-    install_brew_bundle
-    change_shell
+    export PATH="/opt/homebrew/bin:$PATH"
+    if [[ $(uname) = "Darwin" ]]; then
+        install_rosetta
+        install_homebrew
+        install_brew_bundle
+    fi
+    mkdirs
     install_omz
     install_zsh_plugins
     copy_dotfiles
-    audit_zsh
+    config_zsh
     install_vim_plug
-    setup_vscode
-
-    run_macos
-
-    mkdirs
+    if [[ $(uname) = "Darwin" ]]; then
+        setup_iterm
+        setup_vscode
+        run_macos
+        killall Dock
+        killall Finder
+    fi
+    change_shell
 }
 
 setup() {
@@ -182,10 +239,4 @@ setup() {
     fi
 }
 
-if [[ $EUID -ne 0 ]]; then
-    print_error "This script must be run as root"
-    exit 1
-else
-    setup
-fi
-
+setup

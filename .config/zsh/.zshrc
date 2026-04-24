@@ -42,5 +42,4 @@ eval "$(nodenv init - zsh)"
 
 source <(fzf --zsh)
 eval "$(zoxide init zsh)"
-eval "$(sesh completion zsh)"
 eval "$(direnv hook zsh)"

@@ -1,13 +1,3 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/core"
-tap "homebrew/services"
-
-# kafkactl
-tap "deviceinsight/packages"
-
 brew "zsh"
 brew "neovim"
 brew "nmap"
@@ -27,7 +17,6 @@ brew "jq"
 brew "fd"
 brew "fzf"
 brew "mas"
-brew "mitmproxy"
 brew "tmux"
 brew "wget"
 
@@ -41,8 +30,6 @@ brew "direnv"
 brew "helm"
 brew "k9s"
 brew "kubectl"
-brew "vault"
-brew "kafkactl"
 
 brew "httpie"
 brew "websocat"
@@ -60,6 +47,7 @@ brew "nodenv"
 brew "cmake"
 brew "zimfw"
 brew "zoxide"
+brew "rust"
 
 cask "font-d2coding"
 cask "font-hack"

@@ -77,7 +77,9 @@ defaults write -g com.apple.trackpad.scaling 1.5
 defaults write -g com.apple.mouse.scaling 2
 
 # zoom with ctrl
-defaults write com.apple.universalaccess.plist closeViewScrollWheelToggle -int 1
+defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
+defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # do not wake by mouse
 defaults write com.apple.Bluetooth RemoteWakeEnabled 0

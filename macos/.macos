@@ -6,7 +6,7 @@ sudo -v
 hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}'
 
 defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
-defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
+defaults write -g KeyRepeat -int 1         # normal minimum is 2 (30 ms)
 defaults write -g ApplePressAndHoldEnabled -bool false
 
 defaults write -g AppleInterfaceStyle -string Dark
@@ -42,19 +42,17 @@ defaults write com.apple.dock show-recents -bool false
 
 defaults delete com.apple.dock persistent-apps
 dock_item() {
-    printf '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>%s</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>', "$1"
+  printf '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>%s</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>', "$1"
 }
 
 defaults write com.apple.dock persistent-apps -array \
-    "$(dock_item /System/Applications/Launchpad.app)" \
-    "$(dock_item /System/Cryptexes/App/System/Applications/Safari.app)" \
-    "$(dock_item /System/Applications/Calendar.app)" \
-    "$(dock_item /Applications/Visual\ Studio\ Code.app)" \
-    "$(dock_item /Applications/Slack.app)" \
-    "$(dock_item /Applications/iTerm.app)" \
-    "$(dock_item /Applications/HTTPie.app)" \
-    "$(dock_item /System/Applications/Utilities/Activity\ Monitor.app)"
-
+  "$(dock_item /System/Cryptexes/App/System/Applications/Safari.app)" \
+  "$(dock_item /System/Applications/Calendar.app)" \
+  "$(dock_item /Applications/Slack.app)" \
+  "$(dock_item /Applications/Zed.app)" \
+  "$(dock_item /Applications/iTerm.app)" \
+  "$(dock_item /Applications/HTTPie.app)" \
+  "$(dock_item /System/Applications/Utilities/Activity\ Monitor.app)"
 
 # Finder
 defaults write com.apple.finder QuitMenuItem -bool true
@@ -64,8 +62,8 @@ defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-sudo systemsetup -settimezone "Asia/Seoul" 2> /dev/null
-sudo systemsetup -setcomputersleep Off 2> /dev/null
+sudo systemsetup -settimezone "Asia/Seoul" 2>/dev/null
+sudo systemsetup -setcomputersleep Off 2>/dev/null
 # Disable hibernation (speeds up entering sleep mode)
 sudo pmset -a hibernatemode 0
 # Disable the sudden motion sensor as it’s not useful for SSDs
@@ -83,3 +81,6 @@ defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # do not wake by mouse
 defaults write com.apple.Bluetooth RemoteWakeEnabled 0
+
+killall Finder
+killall Dock

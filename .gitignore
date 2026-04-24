@@ -35,3 +35,5 @@ Thumbs.db
 
 # Git
 .gitignore
+/.config/zed/prompts/prompts-library-db.0.mdb/data.mdb
+/.config/zed/prompts/prompts-library-db.0.mdb/lock.mdb

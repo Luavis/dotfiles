@@ -14,7 +14,7 @@ print_log() {
   local columns
   columns=$(tput cols 2>/dev/null || echo 80)
   local adjust=$((columns - ${#msg} - ${#status}))
-  (( adjust < 1 )) && adjust=1
+  ((adjust < 1)) && adjust=1
   printf "%s" "$msg"
   printf "%*s" "$adjust" "" | tr " " "."
   printf "%s\n" "$status"
@@ -111,6 +111,11 @@ clone_or_update() {
   log_ok "Clone $(basename "$target")"
 }
 
+setup_macos() {
+  sh ./macos/.macos
+  log_ok "Set up macos settings"
+}
+
 link_configs() {
   link_path "${REPO_ROOT}/.zshenv" "$HOME/.zshenv"
   link_path "${REPO_ROOT}/.config/zsh" "$HOME/.config/zsh"
@@ -165,6 +170,7 @@ main() {
   link_configs
   setup_tmux_plugins
   setup_iterm
+  setup_macos
   change_shell
 }
 

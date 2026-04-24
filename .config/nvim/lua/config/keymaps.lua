@@ -1,3 +1,11 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+local map = LazyVim.safe_keymap_set
+
+map("n", "<C-/>", function()
+  Snacks.terminal(nil, { cwd = LazyVim.root(), win = { position = "right" } })
+end, { desc = "Terminal (Root Dir)" })
+map("n", "<C-_>", function()
+  Snacks.terminal(nil, { cwd = LazyVim.root(), win = { position = "right" } })
+end, { desc = "which_key_ignore" })
+
+map("n", "<M-right>", "e")
+map("n", "<M-left>", "b")

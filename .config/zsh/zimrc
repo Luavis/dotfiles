@@ -1,0 +1,23 @@
+#
+# Modules
+#
+
+zmodule environment
+zmodule input
+zmodule utility
+
+zmodule zsh-users/zsh-completions --fpath src
+zmodule completion
+
+zmodule fzf
+zmodule homebrew
+zmodule git
+zmodule direnv
+
+#
+# Modules that must be initialized last
+#
+
+zmodule zsh-users/zsh-syntax-highlighting
+zmodule zsh-users/zsh-autosuggestions
+zmodule romkatv/powerlevel10k --use degit

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
+alias cd="z"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
+alias ~="cd ~"
 alias -- -="cd -"
 
-# Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
 alias g="git"
@@ -15,22 +15,26 @@ alias h="history"
 alias jb="jobs"
 
 alias ls="lsd"
+alias lt="ls -lh --tree --depth 2"
 
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias grep="grep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias egrep="egrep --color=auto"
 
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+alias ips="ifconfig -a | grep -o 'inet6\\? \\(addr:\\)\\?\\s\\?\\(\\(\\([0-9]\\+\\.\\)\\{3\\}[0-9]\\+\\)\\|[a-fA-F0-9:]\\+\\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
-# Flush Directory Service cache
 alias dnsflush="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
-
 alias notify="tput bel"
 
 alias vim="nvim"
 alias vi="nvim"
 alias nproc="sysctl -n hw.physicalcpu"
 
-alias lg=lazygit
+alias lg="lazygit"
+alias ai="aichat"
+alias rm="gomi"
+alias t="tmux"
+alias mux="tmuxinator"
+alias k="kubectl"

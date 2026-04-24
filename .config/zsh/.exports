@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+export EDITOR="nvim"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+export NODE_REPL_HISTORY="$HOME/.node_history"
+export NODE_REPL_HISTORY_SIZE="32768"
+export NODE_REPL_MODE="sloppy"
+
+export PYTHONIOENCODING="UTF-8"
+
+export HISTSIZE="32768"
+export HISTFILESIZE="${HISTSIZE}"
+export HISTCONTROL="ignoreboth"
+
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+export LESS_TERMCAP_md="${yellow}"
+export MANPAGER="less -X"
+
+export UPDATE_ZSH_DAYS=13
+export DISABLE_LS_COLORS="false"
+export ENABLE_CORRECTION="false"
+export COMPLETION_WAITING_DOTS="true"
+export HIST_STAMPS="yyyy-mm-dd"
+export CASE_SENSITIVE="false"
+
+export HOMEBREW_MAKE_JOBS="$(sysctl -n hw.physicalcpu)"
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+export GOROOT="$(brew --prefix)/opt/go/libexec"
+export GOPATH="$HOME/Projects/go"
+export GOBIN="$GOPATH/bin"
+export GO111MODULE="on"
+
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
+
+export FZF_DEFAULT_OPTS="--height 30% --layout=reverse"
+export BUILDKIT_HOST="unix://$HOME/.lima/buildkit/sock/buildkitd.sock"
+export POWERLINE_NERD_FONTS=1

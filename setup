@@ -1,242 +1,171 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
-sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-abspath() {
-    pushd "$1" &> /dev/null
-    if [[ $? != 0 ]]; then
-        return 1;
-    fi
-    pwd -P
-    exit_code=$?
-    popd &> /dev/null
-    return ${exit_code}
-}
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 print_error() {
-    local msg=$1
-    echo "\033[0;31m${msg}\033[0m"
-}
-
-print_blue() {
-    local msg=$1
-    echo "\033[1;34m${msg}\033[0m"
-}
-
-print_green() {
-    local msg=$1
-    echo "\033[0;32m${msg}\033[0m"
+  printf "\033[0;31m%s\033[0m\n" "$1"
 }
 
 print_log() {
-    local msg="$1 "
-    local status=" [$2]"
-    columns=$(tput cols)
-    msg_width="${#msg}"
-    status_width="${#status}"
-    adjust=$(( (columns - (msg_width + status_width) ) ))
-    printf "$msg"
-    printf '%*s' "$adjust" | tr ' ' '.'
-    printf "$status"
-}
-
-log_skip() {
-    print_log "$1" 'Skip'
+  local msg="$1 "
+  local status=" [$2]"
+  local columns
+  columns=$(tput cols 2>/dev/null || echo 80)
+  local adjust=$((columns - ${#msg} - ${#status}))
+  (( adjust < 1 )) && adjust=1
+  printf "%s" "$msg"
+  printf "%*s" "$adjust" "" | tr " " "."
+  printf "%s\n" "$status"
 }
 
 log_ok() {
-    print_log "$1" 'OK'
+  print_log "$1" "OK"
 }
 
-# macos
+log_skip() {
+  print_log "$1" "Skip"
+}
+
 install_xcode_command_line() {
-    # check xcode commandline is pre-installed
-    local xcode_installed=$(xcode-select -p 2>/dev/null)
-    if [ "$xcode_installed" = "" ]; then
-        xcode-select --install
-        echo "Try again after install xcode-select"
-        exit 1
-    else
-        log_skip "Xcode command line tool"
-    fi
-}
+  if xcode-select -p >/dev/null 2>&1; then
+    log_skip "Xcode command line tools"
+    return
+  fi
 
-install_homebrew() {
-    local brew_installed=$(brew --version 2>/dev/null)
-    if [[ "$brew_installed" = "" ]]; then
-        sudo -u "$(logname)" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        log_ok "Homebrew"
-    else
-        log_skip "Homebrew"
-    fi
-}
-
-install_brew_bundle() {
-    caffeinate -i sudo -u "$(logname)" brew bundle --file "$(pwd)/brew/Brewfile"
-    log_ok "Install brew bundles"
-}
-
-change_shell() {
-    if [ $SHELL != "/bin/zsh" ]; then
-        chsh -s /bin/zsh "$(logname)"
-        log_ok "Change shell"
-    else
-        log_skip "Change shell"
-    fi
-}
-
-install_omz() {
-    if [[ -d "$HOME/.oh-my-zsh" ]]; then
-        log_skip "Oh My Zsh"
-    else
-        sudo -u "$(logname)" RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        log_ok "Oh My Zsh"
-    fi
-}
-
-install_zsh_plugins() {
-    FAST_SYNTAX_HIGHLIGHTING_PATH="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting"
-    AUTO_SUGGESTIONS_PATH="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-    if [ -d "$FAST_SYNTAX_HIGHLIGHTING_PATH" ]; then
-        log_skip "Install zsh - fast syntax highlighting"
-    else
-        # fast syntax highlighting
-        sudo -u "$(logname)" git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git "$FAST_SYNTAX_HIGHLIGHTING_PATH"
-        log_ok "Install zsh plugin - fast syntax highlighting"
-    fi
-
-    if [ -d "$AUTO_SUGGESTIONS_PATH" ]; then
-        log_skip "Install zsh - auto suggestions"
-    else
-        # auto suggestions
-        sudo -u "$(logname)" git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTO_SUGGESTIONS_PATH"
-        log_ok "Install zsh - auto suggestions"
-    fi
-}
-
-copy_dotfiles() {
-    sudo -u "$(logname)" find . -name ".*" -maxdepth 1 ! -path . ! -name '.DS_Store' ! -name '.git' -exec cp -r "{}" "$HOME/" \;
-    log_ok "Copy dotfiles"
-}
-
-config_zsh() {
-    chmod g-w,o-w /opt/homebrew/bin/zsh
-    chmod g-w,o-w /opt/homebrew/share/zsh/site-functions
-    log_ok "Config zsh"
-}
-
-install_vim_plug() {
-    if ! [ -d ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
-        sudo -u "$(logname)" git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-    else
-        log_skip "install vim plug"
-    fi
-    sudo -u "$(logname)" nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
+  xcode-select --install
+  print_error "Install Xcode command line tools, then run ./setup again."
+  exit 1
 }
 
 install_rosetta() {
-    if ! (arch -arch x86_64 uname -m > /dev/null) ; then
-        softwareupdate --install-rosetta --agree-to-license
-        log_ok "rosetta installed"
-    else
-        log_skip "rosetta installed"
-    fi
+  if arch -arch x86_64 uname -m >/dev/null 2>&1; then
+    log_skip "Rosetta"
+    return
+  fi
+
+  softwareupdate --install-rosetta --agree-to-license
+  log_ok "Rosetta"
 }
 
-mkdirs() {
-    if [ ! -d "$HOME/Projects" ]; then
-        sudo -u "$(logname)" mkdir "$HOME/Projects"
-    fi
+install_homebrew() {
+  if command -v brew >/dev/null 2>&1; then
+    log_skip "Homebrew"
+    return
+  fi
 
-    if [ ! -d "$HOME/Projects/go" ]; then
-        sudo -u "$(logname)" mkdir "$HOME/Projects/go"
-    fi
-
-    log_ok "Set directories"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  log_ok "Homebrew"
 }
 
-setup_vscode() {
-    EXTENSIONS=(
-        Equinusocio.vsc-community-material-theme
-        Equinusocio.vsc-material-theme
-        esbenp.prettier-vscode
-        golang.go
-        jpoissonnier.vscode-styled-components
-        ms-azuretools.vscode-docker
-        ms-python.isort
-        ms-python.python
-        ms-python.vscode-pylance
-        ms-toolsai.jupyter
-        ms-toolsai.jupyter-keymap
-        ms-toolsai.jupyter-renderers
-        ms-toolsai.vscode-jupyter-cell-tags
-        ms-toolsai.vscode-jupyter-slideshow
-        ms-vscode.cmake-tools
-        ms-vscode.cpptools
-        ms-vscode.cpptools-extension-pack
-        ms-vscode.cpptools-themes
-        ms-vscode.makefile-tools
-        ms-vscode.sublime-keybindings
-        peterj.proto
-        PKief.material-icon-theme
-        tamasfe.even-better-toml
-        twxs.cmake
-    )
+install_brew_bundle() {
+  brew bundle --file "${REPO_ROOT}/brew/Brewfile"
+  log_ok "Brew bundle"
+}
 
-    for EXT in $EXTENSIONS; do
-        echo "$EXT"
-        sudo -u "$(logname)" code --install-extension "$EXT" --force
-    done
+ensure_directories() {
+  mkdir -p "$HOME/.config" "$HOME/.local/share/tmux/plugins" "$HOME/Projects/go"
+  log_ok "Directories"
+}
 
-    sudo -u "$(logname)" cp './vscode/settings.json' "$HOME/Library/Application Support/Code/User/settings.json"
-    log_ok "Set up vscode"
+backup_path() {
+  local target="$1"
+  if [ -L "$target" ] || [ -e "$target" ]; then
+    local backup="${target}.backup.$(date +%Y%m%d%H%M%S)"
+    mv "$target" "$backup"
+    log_ok "Backed up ${target}"
+  fi
+}
+
+link_path() {
+  local source="$1"
+  local target="$2"
+
+  mkdir -p "$(dirname "$target")"
+  if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+    log_skip "Link ${target}"
+    return
+  fi
+
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    backup_path "$target"
+  fi
+
+  ln -s "$source" "$target"
+  log_ok "Link ${target}"
+}
+
+clone_or_update() {
+  local repo="$1"
+  local target="$2"
+
+  if [ -d "$target/.git" ]; then
+    git -C "$target" pull --ff-only
+    log_ok "Update $(basename "$target")"
+    return
+  fi
+
+  rm -rf "$target"
+  git clone --depth 1 "$repo" "$target"
+  log_ok "Clone $(basename "$target")"
+}
+
+link_configs() {
+  link_path "${REPO_ROOT}/.zshenv" "$HOME/.zshenv"
+  link_path "${REPO_ROOT}/.config/zsh" "$HOME/.config/zsh"
+  link_path "${REPO_ROOT}/.config/tmux" "$HOME/.config/tmux"
+  link_path "${REPO_ROOT}/.config/nvim" "$HOME/.config/nvim"
+  link_path "${REPO_ROOT}/.config/colima" "$HOME/.config/colima"
+  link_path "${REPO_ROOT}/.config/zed" "$HOME/.config/zed"
+  link_path "${REPO_ROOT}/.gitconfig" "$HOME/.gitconfig"
+}
+
+setup_tmux_plugins() {
+  clone_or_update "https://github.com/catppuccin/tmux.git" "$HOME/.local/share/tmux/plugins/catppuccin/tmux"
+  clone_or_update "https://github.com/tmux-plugins/tmux-battery.git" "$HOME/.local/share/tmux/plugins/tmux-plugins/tmux-battery"
+  clone_or_update "https://github.com/tmux-plugins/tmux-cpu.git" "$HOME/.local/share/tmux/plugins/tmux-plugins/tmux-cpu"
+  clone_or_update "https://github.com/tmux-plugins/tmux-resurrect.git" "$HOME/.local/share/tmux/plugins/tmux-plugins/tmux-resurrect"
 }
 
 setup_iterm() {
-    cp ./iterm/com.googlecode.iterm2.plist ~/Library/Preferences
+  cp "${REPO_ROOT}/iterm/com.googlecode.iterm2.plist" "$HOME/Library/Preferences"
+  log_ok "iTerm preferences"
 }
 
-run_macos() {
-    ./macos/.macos
+change_shell() {
+  if [ "${SHELL}" = "/bin/zsh" ]; then
+    log_skip "Default shell"
+    return
+  fi
+
+  chsh -s /bin/zsh "$(whoami)"
+  log_ok "Default shell"
 }
 
-setup_macos() {
-    install_xcode_command_line
-    export PATH="/opt/homebrew/bin:$PATH"
-    if [[ $(uname) = "Darwin" ]]; then
-        install_rosetta
-        install_homebrew
-        install_brew_bundle
-    fi
-    mkdirs
-    install_omz
-    install_zsh_plugins
-    copy_dotfiles
-    config_zsh
-    install_vim_plug
-    if [[ $(uname) = "Darwin" ]]; then
-        setup_iterm
-        setup_vscode
-        run_macos
-        killall Dock
-        killall Finder
-    fi
-    change_shell
+main() {
+  if [ "$(uname)" != "Darwin" ]; then
+    print_error "This setup script currently supports macOS only."
+    exit 1
+  fi
+
+  sudo -v
+  while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+  done 2>/dev/null &
+
+  install_xcode_command_line
+  install_rosetta
+  install_homebrew
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  install_brew_bundle
+  ensure_directories
+  link_configs
+  setup_tmux_plugins
+  setup_iterm
+  change_shell
 }
 
-setup() {
-    if [[ $(uname) = "Darwin" ]]; then
-        setup_macos
-    elif [[ $(uname) = "Linux" && -f /etc/arch-release ]]; then
-        echo "not implemented"
-    else
-        print_error "This script only support macOS or Arhclinux"
-        exit 1
-    fi
-}
-
-setup
+main "$@"

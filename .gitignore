@@ -15,5 +15,23 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
+# Local runtime files
+.nvimlog
+.config/zsh/.secrets
+.config/zsh/.zcompdump*
+.config/zsh/.zcompcache/
+.config/zsh/.zsh_history
+.config/nvim/debug/
+.config/nvim/.repro/
+.config/nvim/doc/tags
+.config/nvim/foo.*
+.config/nvim/*.log
+.config/nvim/data/
+.config/colima/_store/
+.config/colima/ssh_config
+.config/zed/.DS_Store
+.config/zed/.tmp*
+.config/zed/conversations/
+
 # Git
 .gitignore

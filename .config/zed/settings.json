@@ -1,0 +1,40 @@
+{
+  "edit_predictions": {
+    "provider": "zed"
+  },
+  "icon_theme": "Catppuccin Macchiato",
+  "agent": {
+    "always_allow_tool_actions": false,
+    "default_model": {
+      "provider": "google",
+      "model": "gemini-2.0-pro-exp"
+    }
+  },
+  "theme": "Catppuccin Macchiato",
+  "ui_font_family": "MesloLGL Nerd Font",
+  "buffer_font_family": "MesloLGLDZ Nerd Font",
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false
+  },
+  "terminal": {
+    "dock": "right",
+    "font_family": "MesloLGLDZ Nerd Font",
+    "line_height": "standard"
+  },
+  "buffer_line_height": "comfortable",
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "python.analysis": {
+          "diagnosticMode": "workspace"
+        },
+        "python": {
+          "pythonPath": ".venv/bin/python"
+        }
+      }
+    }
+  }
+}

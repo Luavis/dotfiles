@@ -184,3 +184,5 @@
 	email = luaviskang@gmail.com
 [credential]
 	helper = osxkeychain
+[pull]
+	rebase = true

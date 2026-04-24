@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+kc() {
+  context_name=$(kubectl config get-contexts -o=name | fzf)
+  if [ -n "$context_name" ]; then
+    kubectl config use-context "$context_name"
+  else
+    echo "k8s context not changed"
+  fi
+}
+
+ssh-list() {
+  server_name="$(sed -rn 's/^\\s*Host\\s+(.*)\\s*/\\1/ip' ~/.ssh/config | fzf)"
+  if [ -z "$server_name" ]; then
+    return
+  fi
+  echo "Connect to $server_name"
+  ssh "$server_name"
+}
+
+tkill() {
+  tmux list-sessions -F "#S" | fzf --prompt="Kill session > " | xargs -I{} tmux kill-session -t "{}"
+}
+
+ts() {
+  sesh connect "$(sesh list --icons | fzf --ansi)"
+}

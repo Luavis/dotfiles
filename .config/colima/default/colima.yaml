@@ -1,0 +1,73 @@
+# Number of CPUs to be allocated to the virtual machine.
+# Default: 2
+cpu: 2
+
+# Size of the disk in GiB to be allocated to the virtual machine for container data.
+# NOTE: value can only be increased after virtual machine has been created.
+#
+# Default: 100
+disk: 100
+
+# Size of the memory in GiB to be allocated to the virtual machine.
+# Default: 2
+memory: 2
+
+# Architecture of the virtual machine (x86_64, aarch64, host).
+#
+# NOTE: value cannot be changed after virtual machine is created.
+# Default: host
+arch: aarch64
+
+# Container runtime to be used (docker, containerd).
+#
+# NOTE: value cannot be changed after virtual machine is created.
+# Default: docker
+runtime: docker
+
+# Set custom hostname for the virtual machine.
+# Default: colima
+#          colima-profile_name for other profiles
+hostname: colima
+
+# Kubernetes configuration for the virtual machine.
+kubernetes:
+  enabled: false
+  version: v1.33.4+k3s1
+  k3sArgs:
+    - --disable=traefik
+  port: 0
+
+# Auto-activate on the Host for client access.
+autoActivate: true
+
+# Network configurations for the virtual machine.
+network:
+  address: false
+  mode: shared
+  interface: en0
+  preferredRoute: false
+  dns: []
+  dnsHosts: {}
+  hostAddresses: false
+
+# ===================================================================== #
+# ADVANCED CONFIGURATION
+# ===================================================================== #
+
+forwardAgent: false
+docker: {}
+vmType: vz
+portForwarder: ssh
+rosetta: false
+binfmt: true
+nestedVirtualization: false
+mountType: virtiofs
+mountInotify: true
+cpuType: ""
+provision: []
+sshConfig: true
+sshPort: 0
+mounts: []
+diskImage: ""
+rootDisk: 20
+env: {}
